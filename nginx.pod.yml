@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-nginx
+  labels:
+    app: nginx
+    rel: stable
+spec:
+  containers:
+    - name: my-nginx
+      resources:
+        limits:
+          memory: 512Mi
+          cpu: "1"
+      image: nginx:alpine
+      args:
+        - "/bin/sh"
+        - -c
+        - touch /tmp/healthy; sleep 30;
+          rm -rf /tmp/healthy; sleep 600;
+      livenessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 15
+        timeoutSeconds: 2
+        periodSeconds: 5
+        failureThreshold: 1
+      readinessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 2
+        periodSeconds: 5
+      ports:
+        - containerPort: 80
+
+# kubectl create -f nginx.pod.yml --save-config
+# kubectl descibe pod [pod-name]
+# kubectl apply -f nginx.pod.yml
+# kubectl exec [pod-name] -it sh
+# kubectl edit -f nginx.pod.yml
+
+
