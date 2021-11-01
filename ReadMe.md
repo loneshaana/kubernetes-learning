@@ -30,7 +30,6 @@ Web UI dashboard
         update container without bringing down the application
         have robest networking
 
-
         Kubernetes acts and orchastrator of nodes
 
         1. Service Discovery/ Load Balancing
@@ -201,3 +200,91 @@ Web UI dashboard
             - Scale the deployment pods to 5
                 kubectl scale deployment [deployment-name] --replicas=5
                 kubectl scale -f file.deployment.yml --replicas=5
+
+
+How to update existing pods
+    zero downtime deployments allow software updates to be deployed
+    to production without impacting end users
+
+---
+Deployment options:
+
+    - Zero Downtime
+    - Updating an application's pods without impacting end users
+    - several options are available
+        - Rolling updates
+        - Blue-green deployments (Multiple environments running exactly same time , where you have proved that the new one is good then you will   switch all the trafic to the new one)
+        - canaray deployments (where a small amount of time will go the new deployment once it is proven to be good then all traffic will be enabled for the new deployment)
+        - Rollbacks (We have trid it and didn't work then we can rollback to previous working version)
+
+---
+Rolling Deployments
+
+    By default kubernates will do the rolling updates once you invoke the deployments , which will enventually gives us 0 downtime
+
+---
+Services
+
+    A Service provides a single point of entry for accessing one or more pods
+        Since pods live and die, can you rely on their IP Address?
+        Ans: No! that's why we need services - IPs change a lot!
+
+    Pods are "mortal" and may only live a short time(ephemeral)
+
+    you can't rely on a pod IPaddress staying the same
+
+    Pods can be horizontally scaled so each pod gets its own ip address
+
+    A pod gets an ip address  after it has been scheduled(no way for clients to know ip ahead of time)
+
+The Role of services
+
+    Services abstract pod IP addresses from consumers
+    Load balance between pods
+    relies on labels to associate a service with a pod
+    Node's kube-proxy creates a virtual IP for services
+    Layer 4 (TCP/UDP over IP)
+    Services are not ephemeral
+    Creates endpoints which sit between a service and pod
+
+
+Services Types
+
+    Services can be defined in different ways
+    - ClusterIp - Expose the service on a cluster-internal IP(Default)
+    - NodePort - Expose the service on each Node's IP at a static port
+    - LoadBalancer - Provision an external IP to act as a load balancer for the service
+    -ExternalName - Maps a service to a DNS name
+
+
+ClusterIp Service(Default)
+
+    Service IP is exposed internally within the cluster
+    only pods withinthe cluster can talk to the service
+    Allow pods to talk to other pods
+
+
+NodePort Service(proxy to internal kubernetes service)
+
+    Exposes the service on each Node's IP at a static port
+    Allocates a port of range (default is 30000-32767)
+
+
+LoadBalancer Service
+
+    Exposes a service externally
+    useful when combined with a cloud provider's load balancer
+    Behind the scenes Nodeport and clusterIp services are created
+    Each node proxies the allocated port
+    External Caller will call the load balancer
+
+
+ExternalName Service
+
+    (If our pods are communicating with some external service and 
+        there is a chance that the external Ip or namespaces gets changed more often,
+        then we can have the ExternalName service which acts a proxy between pods and External Service, when ever there is change in namespace or ip of the external service we only need to update our External Service not the pods
+    )
+    Service that acts as an alias for an external service
+    Allows a service to act as the proxy for an external service 
+    External service details are hidden from cluster(easier to change)
