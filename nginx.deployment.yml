@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  my-nginx
+  labels:
+    app:  my-nginx
+spec:
+  # strategy:
+  #   rollingUpdate:
+  #     maxSurge: 1
+  #     maxUnavailable: 1
+  #   type: RollingUpdate
+  replicas: 2         #horizontal scalling
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app:  my-nginx
+    spec:
+      containers:
+      - image:  nginx:alpine
+        name:  my-nginx
+        resources:
+          limits:
+            memory: 128Mi   #128MB
+            cpu: "200m"     #200 millicpu (.2cpu or 20% of the cpu)
+        # livenessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 5000
+        #   initialDelaySeconds: 90
+        #   timeoutSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 5000
+        #   initialDelaySeconds: 30
+        #   timeoutSeconds: 10
+        # env:
+        # - name:  ENVVARNAME
+        #   value:  ENVVARVALUE       
+        ports:
+        - containerPort:  80
+          name:  my-nginx
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+        - name: data
+          emptyDir: {}
+      restartPolicy: Always
+      # imagePullPolicy: Always

@@ -145,12 +145,10 @@ Web UI dashboard
     Alternate way to create and apply changes to a pod from YAML
     kubectl apply -f file.pod.yml
 
-
     #use --save-config when you want to use
     #kubectl apply in the future
 
     kubectl create -f file.pod.yml --save-config( save current properties in the resource configuration)
-
 
     kubectl delete -f file.pod.yml
 
@@ -190,3 +188,16 @@ Web UI dashboard
             - creates a unique label that is assigned to the replicaSet and generated pods
             - YAML for deployment is very similar to a YAML for replicaSet
                 - one difference is a kind property
+        
+        Commands
+            - Get Deployments
+                kubectl get deployment
+            - get labels
+                kubectl get deployment --show-labels
+            - deployments with specific label
+                kubectl get deployment -l app=nginx
+            - Deleting a deployment
+                kubectl delete deployment [deployment-delete]
+            - Scale the deployment pods to 5
+                kubectl scale deployment [deployment-name] --replicas=5
+                kubectl scale -f file.deployment.yml --replicas=5
