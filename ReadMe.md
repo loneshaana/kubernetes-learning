@@ -288,3 +288,21 @@ ExternalName Service
     Service that acts as an alias for an external service
     Allows a service to act as the proxy for an external service 
     External service details are hidden from cluster(easier to change)
+
+
+---
+Port Forwarding
+
+    Q. How can you access a pod from outside of kubernetes?
+        you can't
+    with port forwarding we can do this actually
+
+    # Listen on port 8080 locally and forward to port 80 in Pod
+    kubectl port-forward pod/[pod-name] 8080:80
+
+    # Listen on port 8080 locally  and forward to Deployment's Pod
+    kubectl port-forward deployment/[deployment-name] 8080
+
+    #Listen on port 8080 locally and forward to Service's Pod
+    kubectl port-forward service/[service-name] 8080
+

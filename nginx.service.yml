@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  frontend     # name of the service(Each service gets a DNS entry)
+      
+spec:
+  selector:
+    app:  my-nginx
+  type:  LoadBalancer
+  ports:
+  - name:  http
+    port:  80           # service port
+    targetPort:  80     # Container target port
