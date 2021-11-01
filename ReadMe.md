@@ -1,6 +1,6 @@
 ## Learning Kubernates
 
-what is kubernates?
+### what is kubernates?
 
     Kubernates from a developer perspective
         Creating Pods
@@ -17,7 +17,8 @@ Running kubernates locally
 Getting started with kubectl
 Web UI dashboard
 
-## Kubernetes Overview
+---
+## <span style="color:blue;">Kubernetes Overview</span>
 
     Kubernetes(k8s) is an open source system for automating deployment, scaling and management of containerized systems
 
@@ -47,31 +48,29 @@ Web UI dashboard
         5. Pod 
         6. Api Service
 
-## Benefits and Use Cases
+---
+## <span style="color:blue;">Benefits and Use Cases</span>
 
     1. why do we need kubernetes
+        Key Container Benefits
+            Accelerate Developer On-boarding
+            Eliminate App Conflicts
+            Environment Consistency
+            Ship Software Faster
+            Orchestrate Container
+            Zero-Downtime Deployments
+            Self Healing
+            Scale Containers
+            Emulate Production Locally
+            Move From Docker Compose to kubernetes
+            Create an end-to-end testing environment
+            Ensure Application scales properly
+            Ensure secrets/config are working properly
+            performance testing scenarios
+            workload scenarios(ci/cd)
 
-    Key Container Benefits
-
-        1. Accelerate Developer On-boarding
-        2. Eliminate App Conflicts
-        3. Environment Consistency
-        4. Ship Software Faster
-
-        Orchestrate Container
-        Zero-Downtime Deployments
-        Self Healing
-        Scale Containers
-        Emulate Production Locally
-        Move From Docker Compose to kubernetes
-        Create an end-to-end testing environment
-        Ensure Application scales properly
-        Ensure secrets/config are working properly
-        performance testing scenarios
-        workload scenarios(ci/cd)
-
-
-## KubeCtl Commands
+---
+## <span style="color:blue;">Kubectl Commands</span>
 
     kubectl
     kubectl version
@@ -84,40 +83,43 @@ Web UI dashboard
     kubectl apply [resource]
     kubectl describe secret -n kube-system
 
-## POD
+---
+## <span style="color:blue;">Pod</span>
 
     Pod core concepts
     Creating a pod
     kubectl and pods
     yaml fundamentals
 
-### Pod core concepts
+---
+### <span style="color:blue;">Pod core concepts</span>
 
     A pod is the basic execution unit of a kubernnetes application-the smallest and simplest unit in the kubernetes object model that you create or deploy.
 
-     Pod run containers
-     Environment for containers
-     organize applications "parts" into pods(server, caching, api's, database etc)
+    Pods run containers
+    Environment for containers
+    organize applications "parts" into pods(server, caching, api's, database etc)
 
-     Pod IP , memory , volumes , etc, shared accross containers
-     pods live and die but never come back to life
-
-
-     Master node is gonna schedule pods on the  node(worker node)
-     our pods can be horizontally scales as well , we can create replica of them and
-     kubernates can load balance between those
-
-     if pods goes sick, kubernates monitors that and replaces with  healthy one
+    Pod IP , memory , volumes , etc, shared accross containers
+    pods live and die but never come back to life
 
 
-     pods within the node have  the unique ip address and this by defaul will have cluster ips , and then the containers within pod will have their unique ports
+    Master node is gonna schedule pods on the  node(worker node)
+    our pods can be horizontally scales as well , we can create replica of them and
+    kubernates can load balance between those
+
+    if pods goes sick, kubernates monitors that and replaces with  healthy one
+
+    Pods within the node have  the unique ip address and this by defaul will 
+    have cluster ips , and then the containers within pod will have their unique ports
 
     Pod containers have the same loopback network interface
     container processes need to bind to different ports within a pod
 
     Pods do  not span nodes
 
-### Creating a pod
+---
+### <span style="color:blue;">Creating a pod</span>
 
     1. kubectl run [podname] --image=nginx:alpine 2. kubectl get pods 3. kibectl get all
 
@@ -152,7 +154,8 @@ Web UI dashboard
 
     kubectl delete -f file.pod.yml
 
-### POD Health
+---
+### <span style="color:blue;">Pod Health</span>
     A probe is a diagnostic perfomed periodically by kubelet on a container
 
     Liveness Probe : liveness probes can be used to determine if a pod is healthy and running as expected
@@ -163,7 +166,8 @@ Web UI dashboard
 
     TCPSocketAction - TCp check against the containers IP addres on a specified port# kubernetes-learning
 
-### Creating Deployments
+---
+### <span style="color:blue;">Creating Deployments</span>
 
     Deployments core concepts
     Creating a deployment
