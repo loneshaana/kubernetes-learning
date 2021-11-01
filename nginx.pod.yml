@@ -19,9 +19,13 @@ spec:
         - touch /tmp/healthy; sleep 30;
           rm -rf /tmp/healthy; sleep 600;
       livenessProbe:
-        httpGet:
-          path: /index.html
-          port: 80
+        # httpGet:
+        #   path: /index.html
+        #   port: 80
+        exec:
+          command:
+            - cat
+            - /tmp/healthy
         initialDelaySeconds: 15
         timeoutSeconds: 2
         periodSeconds: 5
@@ -30,7 +34,8 @@ spec:
         httpGet:
           path: /index.html
           port: 80
-        initialDelaySeconds: 2
+        initialDelaySeconds: 15
+        timeoutSeconds: 2
         periodSeconds: 5
       ports:
         - containerPort: 80
