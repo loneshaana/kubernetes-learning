@@ -236,7 +236,7 @@ Services
     Pods can be horizontally scaled so each pod gets its own ip address
 
     A pod gets an ip address  after it has been scheduled(no way for clients to know ip ahead of time)
-
+---
 The Role of services
 
     Services abstract pod IP addresses from consumers
@@ -247,7 +247,7 @@ The Role of services
     Services are not ephemeral
     Creates endpoints which sit between a service and pod
 
-
+---
 Services Types
 
     Services can be defined in different ways
@@ -256,20 +256,20 @@ Services Types
     - LoadBalancer - Provision an external IP to act as a load balancer for the service
     -ExternalName - Maps a service to a DNS name
 
-
+---
 ClusterIp Service(Default)
 
     Service IP is exposed internally within the cluster
     only pods withinthe cluster can talk to the service
     Allow pods to talk to other pods
 
-
+---
 NodePort Service(proxy to internal kubernetes service)
 
     Exposes the service on each Node's IP at a static port
     Allocates a port of range (default is 30000-32767)
 
-
+---
 LoadBalancer Service
 
     Exposes a service externally
@@ -278,7 +278,7 @@ LoadBalancer Service
     Each node proxies the allocated port
     External Caller will call the load balancer
 
-
+---
 ExternalName Service
 
     (If our pods are communicating with some external service and 
@@ -288,7 +288,6 @@ ExternalName Service
     Service that acts as an alias for an external service
     Allows a service to act as the proxy for an external service 
     External service details are hidden from cluster(easier to change)
-
 
 ---
 Port Forwarding
@@ -306,3 +305,102 @@ Port Forwarding
     #Listen on port 8080 locally and forward to Service's Pod
     kubectl port-forward service/[service-name] 8080
 
+
+    # update a service
+    # Assumes --save-config was used with create 
+    kubectl apply -f file.service.yml
+
+---
+Testing A Service and Pod with Curl
+
+    How can you quickly test if a service and pod is working?
+
+    Use kubectl exec to shell into  a Pod/container , then execute the curl command
+
+    kubectl exec [pod-name] --curl http://podIP
+
+    if curl is not avaiable
+    kubectl exec [pod-name] -it sh
+    > apk add curl
+    > curl -s http://podIP
+
+---
+Storage core concepts
+
+    How do you store application state/data and exchage it between
+    pods with kubernetes
+
+    Answer:
+    Volumes (although other data storage options exist)
+
+    A volume can be used to hold data and state for pods and containers
+
+    Pods live and die so their file system is short lived
+
+    volumes can be used to store state/data and use it in a pod
+
+    A pod can have multiple volumes attaches to it
+
+    containers rely on a mountPath to access  a volume
+
+    Kubernets supports:
+        - volumes
+        - PersistentVolumes
+        - persistentVolumeClaims
+        - StorageClasses
+
+    A volume reference a storage location
+    Must have a unique name
+    Attached to a pod and may or may not be tied to the pod's lifetime(depending on the volueme type)
+
+---
+Basic Volumes
+
+    emptyDir = Empty directory for storing "transient" data (share's pod's lifetime)
+    useful for sharing files between containers running in a pod
+
+    hostPath = Pod mounts into the node's filesystem
+
+    nfs = An NFS(Network file system) share mounted into the pod
+
+    configMap/secret = Special types of volumes that provide a pdo with access to kubernetes resources
+
+    persistentvolumeChaim = provides pods with a more persistent storage option that is abstracted from the details
+
+    cloud = cluster wide storage
+
+---
+Viewing a pod's volumes
+
+    kubectl descibe pod [pod-name]
+    kubectl get pod [pod-name] -o yaml or json
+
+---
+PersistentVolume
+
+    A persistentVolume is a cluster wide storage unit provisioned by an administrator with a lifecycle independent for a POD
+
+    a persistentVolumeClaim is a request for a storage unit
+
+    A persistentVolume is a cluster wide storage resource that relies on 
+    network-attached storage
+
+    Noramlly provisioned by a cluster administrator
+
+    Available to a prod even if it gets resheduled to a different node
+
+    Rely on a storage provider such as nfs, cloud storage or other options
+
+    Associated with a prod by using a persitentVolumeClaim
+
+    Kubernetes binds the PVC to PV
+
+---
+StorageClass
+
+    A StorageClass is a type of storage template that can be used to dynamically provision storage
+
+    used to define different "classes" of storage
+    Act as a type of storage template
+
+    Supports dynamic provisioning of persistentVolumes
